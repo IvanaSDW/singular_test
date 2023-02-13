@@ -1,15 +1,15 @@
-
 import 'package:get/get.dart';
-import 'package:singular_test/controllers/home_logic.dart';
-import 'package:singular_test/services/firebase/auth_provider.dart';
-import 'package:singular_test/services/firebase/firestore_service.dart';
-import 'package:singular_test/utils/constants.dart';
+import '../../../../controllers/home_logic.dart';
 import '../../../../models/unsplash_image.dart';
+import '../../../../services/firebase/auth_provider.dart';
+import '../../../../services/firebase/firestore_service.dart';
 import '../../../../services/unsplash/unsplash_service.dart';
+import '../../../../utils/constants.dart';
 
-class GalleryLogic extends GetxController {
+class FavoritesLogic extends GetxController {
   final HomeLogic homeController = Get.find<HomeLogic>();
   RxList<UnsplashImage> images = <UnsplashImage>[].obs;
+
   final RxInt _page = 0.obs;
 
   int get page => _page.value;
@@ -35,11 +35,12 @@ class GalleryLogic extends GetxController {
   set loadingImages(bool value) => _loadingImages.value = value;
 
   final RxBool _showSearchBar = false.obs;
+
   bool get showSearchBar => _showSearchBar.value;
+
   set showSearchBar(bool value) => _showSearchBar.value = value;
 
-
-  Future<List<UnsplashImage>> loadUnsplashImages({required bool forward}) async {
+  Future<List<UnsplashImage>> loadFavImages() async {
     logger.i('called for : $keyword');
     if (loadingImages) {
       return [];
@@ -51,28 +52,11 @@ class GalleryLogic extends GetxController {
     loadingImages = true;
 
     List<UnsplashImage> fetchImages;
-    if (keyword.isEmpty) {
-      fetchImages = await Unsplash.fetchImages(
-          page: forward
-              ? ++page
-              : page <= 1
-              ? 1
-              : --page);
-      logger.i('Page: $page');
-      images.value = fetchImages;
-    } else {
-      var res = await Unsplash.fetchImagesByKeyword(
-          keyword: keyword,
-          page: forward
-              ? ++page
-              : page <= 1
-              ? 1
-              : --page);
-      totalPages = res['totalPages'];
-      logger.i('Page: $page');
-      fetchImages = res['results'];
-      images.value = fetchImages;
-    }
+
+    fetchImages = await FirestoreService()
+        .fetchFavImages(userId: FirebaseAuthProvider().firebaseUser!.uid);
+    images.value = fetchImages;
+
     loadingImages = false;
     return fetchImages;
   }
@@ -95,24 +79,25 @@ class GalleryLogic extends GetxController {
     totalPages = -1;
     keyword = '';
     homeController.homeTitle.value = homeController.defaultTitle;
-    loadUnsplashImages(forward: true);
+    loadFavImages();
   }
 
   void submitSearch() async {
     resetImages();
-    loadUnsplashImages(forward: true);
+    loadFavImages();
     showSearchBar = false;
     homeController.homeTitle.value = keyword;
   }
 
-  void onAddImageToUserCollection(UnsplashImage image) {
-    FirestoreService().addImageToUserFavorites(FirebaseAuthProvider().firebaseUser!.uid, image);
+  void onRemoveImageFromUserCollection(String imageId) {
+    FirestoreService().removeImageFromUserFavorites(
+        FirebaseAuthProvider().firebaseUser!.uid, imageId);
   }
 
   @override
   void onInit() {
     super.onInit();
     logger.i('called');
-    loadUnsplashImages(forward: true);
+    loadFavImages();
   }
 }

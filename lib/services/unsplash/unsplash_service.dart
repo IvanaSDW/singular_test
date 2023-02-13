@@ -1,14 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:singular_test/config/keys.dart';
-import '../models/unsplash_image.dart';
-import '../utils/constants.dart';
+import '../../models/unsplash_image.dart';
+import '../../utils/constants.dart';
 
 class Unsplash {
 
   static const String baseUrl = 'https://api.unsplash.com';
 
-  static Future<List<UnsplashImage>> loadImages(
+  static Future<List<UnsplashImage>> fetchImages(
       {int page = 1, int perPage = 10, String? keyword}) async {
     logger.i('keyword: $keyword');
     String url = '$baseUrl/photos?page=$page&per_page=$perPage';
@@ -21,7 +21,7 @@ class Unsplash {
     return images;
   }
 
-  static Future<Map<String, dynamic>> loadImagesByKeyword(
+  static Future<Map<String, dynamic>> fetchImagesByKeyword(
       {int page = 1, int perPage = 10, String? keyword}) async {
     logger.i('keyword: $keyword');
     String url = '$baseUrl/search/photos?query=$keyword&page=$page&per_page=$perPage&order_by=popular';

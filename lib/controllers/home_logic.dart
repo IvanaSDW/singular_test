@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
 import '../models/unsplash_image.dart';
-import '../services/unsplash_service.dart';
+import '../services/unsplash/unsplash_service.dart';
 import '../utils/constants.dart';
 
 class HomeLogic extends GetxController {

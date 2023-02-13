@@ -36,4 +36,13 @@ class UnsplashUser {
         avatarMedium: json['profile_image']['medium'],
         avatarLarge: json['profile_image']['large'],
       );
+  factory UnsplashUser.fromFirebase(Map<String, dynamic> json) => UnsplashUser(
+    id: json['id'],
+    userName: json['userName'],
+    firstName: json['first_name'],
+    lastName: json['firstName'],
+    avatarSmall: json['avatarSmall'],
+    avatarMedium: json['avatarMedium'],
+    avatarLarge: json['avatarLarge'],
+  );
 }

@@ -4,8 +4,6 @@ class UnsplashImage {
   UnsplashImage({required this.id,
     required this.regularUrl,
     required this.fullUrl,
-    required this.createdAt,
-    required this.updatedAt,
     required this.width,
     required this.height,
     required this.altDescription,
@@ -15,12 +13,12 @@ class UnsplashImage {
     required this.rawUrl,
     required this.smallUrl,
     required this.thumbUrl,
-    required this.user});
+    required this.author});
 
   String id;
   String? description;
   String? altDescription;
-  UnsplashUser user;
+  UnsplashUser author;
   String rawUrl;
   String thumbUrl;
   String smallUrl;
@@ -29,27 +27,23 @@ class UnsplashImage {
   int height;
   int width;
   int likes;
-  DateTime createdAt;
-  DateTime updatedAt;
   Map<dynamic, dynamic>? exif;
 
-  Map<String, dynamic> toJson(UnsplashImage image) =>
+  Map<String, dynamic> toJson() =>
       {
-        'id': image.id,
-        'regularUrl': image.regularUrl,
-        'fullUrl': image.fullUrl,
-        'createdAt': image.createdAt,
-        'updatedAt': image.updatedAt,
-        'width': image.width,
-        'height': image.height,
-        'altDescription': image.altDescription,
-        'description': image.description,
+        'id': id,
+        'regularUrl': regularUrl,
+        'fullUrl': fullUrl,
+        'width': width,
+        'height': height,
+        'altDescription': altDescription,
+        'description': description,
         //exif: {},
-        'likes': image.likes,
-        'rawUrl': image.rawUrl,
-        'smallUrl': image.smallUrl,
-        'thumbUrl': image.thumbUrl,
-        'user': image.user.toJson(),
+        'likes': likes,
+        'rawUrl': rawUrl,
+        'smallUrl': smallUrl,
+        'thumbUrl': thumbUrl,
+        'author': author.toJson(),
       };
 
   factory UnsplashImage.fromJson(Map<String, dynamic> json) =>
@@ -57,8 +51,6 @@ class UnsplashImage {
         id: json['id'],
         regularUrl: json['urls']['regular'],
         fullUrl: json['urls']['full'],
-        createdAt: DateTime.parse(json['created_at']),
-        updatedAt: DateTime.parse(json['updated_at']),
         width: json['width'],
         height: json['height'],
         altDescription: json['alt_description'],
@@ -68,7 +60,24 @@ class UnsplashImage {
         rawUrl: json['urls']['raw'],
         smallUrl: json['urls']['small'],
         thumbUrl: json['urls']['thumb'],
-        user: UnsplashUser.fromJson(json['user']),
+        author: UnsplashUser.fromJson(json['user']),
+      );
+
+  factory UnsplashImage.fromFirebase(Map<String, dynamic> json) =>
+      UnsplashImage(
+        id: json['id'],
+        regularUrl: json['regularUrl'],
+        fullUrl: json['fullUrl'],
+        width: json['width'],
+        height: json['height'],
+        altDescription: json['alt_description'],
+        description: json['description'],
+        exif: {},
+        likes: json['likes'],
+        rawUrl: json['rawUrl'],
+        smallUrl: json['smallUrl'],
+        thumbUrl: json['thumbUrl'],
+        author: UnsplashUser.fromFirebase(json['author']),
       );
 
 // Exif getExif() {

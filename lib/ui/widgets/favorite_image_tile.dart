@@ -2,12 +2,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:singular_test/models/unsplash_image.dart';
-import 'package:singular_test/ui/pages/home/gallery/gallery_logic.dart';
 
-class ImageTile extends StatelessWidget {
-  ImageTile({key, required this.image}) : super(key: key);
+import '../pages/home/favorites/FavoritesLogic.dart';
+
+class FavoriteImageTile extends StatelessWidget {
+  FavoriteImageTile({key, required this.image}) : super(key: key);
   final UnsplashImage image;
-  final GalleryLogic galleryController = Get.find();
+  final FavoritesLogic favoritesController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -57,9 +58,9 @@ class ImageTile extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         TextButton(
-                            onPressed: () => galleryController.onAddImageToUserCollection(image),
+                            onPressed: () => favoritesController.onRemoveImageFromUserCollection(image.id),
                             child: const Text(
-                              'Add to my\ncollection',
+                              'Remove from\n my collection',
                               style: TextStyle(fontSize: 10),
                             )),
                         Expanded(

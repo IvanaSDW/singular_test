@@ -1,0 +1,90 @@
+{
+  "project_info": {
+    "project_number": "760730884726",
+    "project_id": "general-tests-dc287",
+    "storage_bucket": "general-tests-dc287.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:760730884726:android:fef432f8bd76bfafd91d57",
+        "android_client_info": {
+          "package_name": "com.example.firebase_google_auth_flow"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "760730884726-ca9ob9i8f9g9iqs1c0r1gassf83if79r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.firebase_google_auth_flow",
+            "certificate_hash": "4f9f71f2b01f2d5c8a5ddb43f96fda80775447e5"
+          }
+        },
+        {
+          "client_id": "760730884726-31k5p54q5n4o7frsfelj7a46rb1m066p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRL00DzthiO85itlYBT1bdJrpPCVgyuiI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "760730884726-31k5p54q5n4o7frsfelj7a46rb1m066p.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "760730884726-nfjb9b2nlgltdv3a0de4d83fevp03ab6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.sdw.ivana.singularTest"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:760730884726:android:1db01050b4f58ba6d91d57",
+        "android_client_info": {
+          "package_name": "com.sdw.ivana.singular_test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "760730884726-31k5p54q5n4o7frsfelj7a46rb1m066p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRL00DzthiO85itlYBT1bdJrpPCVgyuiI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "760730884726-31k5p54q5n4o7frsfelj7a46rb1m066p.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "760730884726-nfjb9b2nlgltdv3a0de4d83fevp03ab6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.sdw.ivana.singularTest"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

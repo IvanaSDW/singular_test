@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import 'logic.dart';
+import 'FavoritesLogic.dart';
 
 class FavoritesBinding extends Bindings {
   @override

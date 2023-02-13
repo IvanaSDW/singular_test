@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:singular_test/ui/pages/home/gallery/gallery_logic.dart';
 import 'package:singular_test/ui/pages/home/gallery/gallery_view.dart';
 import '../../../controllers/home_logic.dart';
+import 'favorites/favorites_view.dart';
 
 class HomePage extends StatelessWidget {
   final logic = Get.find<HomeLogic>();
@@ -55,7 +56,7 @@ class HomePage extends StatelessWidget {
         ],
       ),
       body: Obx(() {
-        return logic.currentTab == 0 ? GalleryComponent() : Container();
+        return logic.currentTab == 0 ? GalleryWidget() : FavoritesWidget();
       }),
       bottomNavigationBar: Obx(() {
         return BottomNavigationBar(

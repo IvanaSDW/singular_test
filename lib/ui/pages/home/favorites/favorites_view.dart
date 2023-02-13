@@ -1,16 +1,18 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-
 import 'package:get/get.dart';
-import 'package:singular_test/ui/pages/home/gallery/gallery_logic.dart';
-import 'package:singular_test/ui/widgets/image_tile.dart';
-import 'package:singular_test/utils/constants.dart';
+import 'package:singular_test/services/firebase/auth_provider.dart';
+import 'package:singular_test/services/firebase/firestore_service.dart';
+import 'package:singular_test/ui/widgets/favorite_image_tile.dart';
 
-class GalleryWidget extends StatelessWidget {
-  final logic = Get.put(GalleryLogic());
+import '../../../../utils/constants.dart';
+import '../../../widgets/image_tile.dart';
+import 'FavoritesLogic.dart';
 
-  GalleryWidget({super.key});
+class FavoritesWidget extends StatelessWidget {
+  final logic = Get.put<FavoritesLogic>(FavoritesLogic());
+
+  FavoritesWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +27,8 @@ class GalleryWidget extends StatelessWidget {
               children: [
                 Expanded(
                   child: TextField(
-                    style: const TextStyle(color: Colors.white),
-                    cursorColor: Colors.white,
+                      style: const TextStyle(color: Colors.white),
+                      cursorColor: Colors.white,
                       keyboardType: TextInputType.text,
                       autofocus: true,
                       decoration: const InputDecoration(
@@ -50,13 +52,13 @@ class GalleryWidget extends StatelessWidget {
                 ),
               ],
             )
-            :Row(
+                :Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 FilledButton(
-                  style: OutlinedButton.styleFrom(backgroundColor: Colors.white24),
+                    style: OutlinedButton.styleFrom(backgroundColor: Colors.white24),
                     onPressed: () {
-                      logic.loadUnsplashImages(forward: false);
+                      logic.loadFavImages();
                     },
                     child: const Icon(Icons.arrow_back)),
                 const SizedBox(
@@ -69,7 +71,7 @@ class GalleryWidget extends StatelessWidget {
                 FilledButton(
                     style: OutlinedButton.styleFrom(backgroundColor: Colors.white24),
                     onPressed: () {
-                      logic.loadUnsplashImages(forward: true);
+                      logic.loadFavImages();
                     },
                     child: const Icon(Icons.arrow_forward)),
               ],
@@ -88,7 +90,7 @@ class GalleryWidget extends StatelessWidget {
                   future: logic.loadImage(index),
                   builder: (context, snapshot) {
                     return snapshot.hasData
-                        ? ImageTile(image: snapshot.data!)
+                        ? FavoriteImageTile(image: snapshot.data!)
                         : const SizedBox.shrink();
                   },
                 );
