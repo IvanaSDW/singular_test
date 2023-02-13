@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:singular_test/models/unsplash_image.dart';
 
-import '../pages/home/favorites/FavoritesLogic.dart';
+import '../pages/home/favorites/favorites_logic.dart';
 
 class FavoriteImageTile extends StatelessWidget {
   FavoriteImageTile({key, required this.image}) : super(key: key);

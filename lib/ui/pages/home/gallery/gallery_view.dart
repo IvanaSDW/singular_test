@@ -8,7 +8,7 @@ import 'package:singular_test/ui/widgets/image_tile.dart';
 import 'package:singular_test/utils/constants.dart';
 
 class GalleryWidget extends StatelessWidget {
-  final logic = Get.put(GalleryLogic());
+  final logic = Get.find<GalleryLogic>();
 
   GalleryWidget({super.key});
 

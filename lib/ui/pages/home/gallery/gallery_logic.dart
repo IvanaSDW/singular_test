@@ -94,7 +94,7 @@ class GalleryLogic extends GetxController {
     page = 0;
     totalPages = -1;
     keyword = '';
-    homeController.homeTitle.value = homeController.defaultTitle;
+    homeController.galleryTitle.value = homeController.defaultGalleryTitle;
     loadUnsplashImages(forward: true);
   }
 
@@ -102,7 +102,7 @@ class GalleryLogic extends GetxController {
     resetImages();
     loadUnsplashImages(forward: true);
     showSearchBar = false;
-    homeController.homeTitle.value = keyword;
+    homeController.galleryTitle.value = keyword;
   }
 
   void onAddImageToUserCollection(UnsplashImage image) {

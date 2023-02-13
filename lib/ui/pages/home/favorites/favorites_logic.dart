@@ -3,7 +3,6 @@ import '../../../../controllers/home_logic.dart';
 import '../../../../models/unsplash_image.dart';
 import '../../../../services/firebase/auth_provider.dart';
 import '../../../../services/firebase/firestore_service.dart';
-import '../../../../services/unsplash/unsplash_service.dart';
 import '../../../../utils/constants.dart';
 
 class FavoritesLogic extends GetxController {
@@ -61,6 +60,27 @@ class FavoritesLogic extends GetxController {
     return fetchImages;
   }
 
+  Future<List<UnsplashImage>> loadFavImagesByKeyword() async {
+    logger.i('called for : $keyword');
+    if (loadingImages) {
+      return [];
+    }
+
+    if (totalPages != -1 && page >= totalPages) {
+      return [];
+    }
+    loadingImages = true;
+
+    List<UnsplashImage> fetchImages;
+
+    fetchImages = await FirestoreService()
+        .fetchFavImagesByKeyword(userId: FirebaseAuthProvider().firebaseUser!.uid, keyword: keyword);
+    images.value = fetchImages;
+
+    loadingImages = false;
+    return fetchImages;
+  }
+
   Future<UnsplashImage?> loadImage(int index) async {
     // check if new images need to be loaded
     return index < images.length ? images[index] : null;
@@ -78,15 +98,15 @@ class FavoritesLogic extends GetxController {
     page = 0;
     totalPages = -1;
     keyword = '';
-    homeController.homeTitle.value = homeController.defaultTitle;
+    homeController.favoritesTitle.value = homeController.defaultGalleryTitle;
     loadFavImages();
   }
 
   void submitSearch() async {
     resetImages();
-    loadFavImages();
+    loadFavImagesByKeyword();
     showSearchBar = false;
-    homeController.homeTitle.value = keyword;
+    homeController.favoritesTitle.value = keyword;
   }
 
   void onRemoveImageFromUserCollection(String imageId) {

@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
-import 'package:singular_test/services/firebase/auth_provider.dart';
-import 'package:singular_test/services/firebase/firestore_service.dart';
 import 'package:singular_test/ui/widgets/favorite_image_tile.dart';
-
 import '../../../../utils/constants.dart';
-import '../../../widgets/image_tile.dart';
-import 'FavoritesLogic.dart';
+import 'favorites_logic.dart';
 
 class FavoritesWidget extends StatelessWidget {
-  final logic = Get.put<FavoritesLogic>(FavoritesLogic());
+  final logic = Get.find<FavoritesLogic>();
 
   FavoritesWidget({super.key});
 

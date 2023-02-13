@@ -70,7 +70,7 @@ class UnsplashImage {
         fullUrl: json['fullUrl'],
         width: json['width'],
         height: json['height'],
-        altDescription: json['alt_description'],
+        altDescription: json['altDescription'],
         description: json['description'],
         exif: {},
         likes: json['likes'],
