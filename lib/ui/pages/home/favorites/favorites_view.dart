@@ -13,6 +13,7 @@ class FavoritesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
+      logger.i('images in favs: ${logic.images.length}');
       return logic.images.isNotEmpty
           ? Column(
               mainAxisSize: MainAxisSize.min,
@@ -115,16 +116,22 @@ class FavoritesWidget extends StatelessWidget {
               ],
             )
           : Center(
-              child: Container(
+              child: SizedBox(
                 width: Get.width * 0.8,
-                child: const Card(
+                child: Card(
                   color: Colors.black26,
                   child: Padding(
                     padding: EdgeInsets.all(16.0),
-                    child: Text(
-                      'You have not yet added images to your collection.\nBrowse to Gallery tab and start adding your favorites!!!',
-                      style: TextStyle(color: Colors.white, fontSize: 20),
-                      textAlign: TextAlign.center,
+                    child: Column(
+                      children: [
+                        const Text(
+                          'You have not yet added images to your collection.\nBrowse to Gallery tab and start adding your favorites!!!',
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                          textAlign: TextAlign.center,
+                        ),
+                        TextButton(onPressed: () => logic.refreshGallery(), child:
+                        const Icon(Icons.refresh))
+                      ],
                     ),
                   ),
                 ),
