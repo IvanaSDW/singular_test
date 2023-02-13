@@ -109,6 +109,7 @@ class FirestoreService {
         .where((image) => (
         (image.altDescription != null && image.altDescription!.contains(keyword))
         || (image.description != null && image.description!.contains(keyword))
+        || (image.author.userName.contains(keyword))
     )
     ).toList());
   }
