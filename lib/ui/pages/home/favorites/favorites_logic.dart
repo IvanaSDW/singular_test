@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import '../../../../controllers/home_logic.dart';
 import '../../../../models/unsplash_image.dart';
+import '../../../../routes/app_routes.dart';
 import '../../../../services/firebase/auth_provider.dart';
 import '../../../../services/firebase/firestore_service.dart';
 import '../../../../utils/constants.dart';
@@ -108,6 +109,9 @@ class FavoritesLogic extends GetxController {
     showSearchBar = false;
     homeController.favoritesTitle.value = keyword;
   }
+
+  onImageTapped(imageId) =>
+      Get.toNamed(Routes.imageDetail, arguments: {'imageId': imageId, 'source': 'local'});
 
   void onRemoveImageFromUserCollection(String imageId) {
     FirestoreService().removeImageFromUserFavorites(

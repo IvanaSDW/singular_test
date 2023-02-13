@@ -6,6 +6,8 @@ class UnsplashUser {
   String avatarSmall;
   String avatarMedium;
   String avatarLarge;
+  String? bio;
+  String? location;
 
   UnsplashUser({
     required this.id,
@@ -15,6 +17,8 @@ class UnsplashUser {
     required this.avatarSmall,
     required this.avatarMedium,
     required this.avatarLarge,
+    required this.bio,
+    required this.location,
   });
 
   toJson() => {
@@ -25,6 +29,8 @@ class UnsplashUser {
         'avatarSmall': avatarSmall,
         'avatarMedium': avatarMedium,
         'avatarLarge': avatarLarge,
+        'bio': bio,
+        'location': location,
       };
 
   factory UnsplashUser.fromJson(Map<String, dynamic> json) => UnsplashUser(
@@ -35,14 +41,19 @@ class UnsplashUser {
         avatarSmall: json['profile_image']['small'],
         avatarMedium: json['profile_image']['medium'],
         avatarLarge: json['profile_image']['large'],
+        bio: json['bio'],
+        location: json['location'],
       );
+
   factory UnsplashUser.fromFirebase(Map<String, dynamic> json) => UnsplashUser(
-    id: json['id'],
-    userName: json['userName'],
-    firstName: json['first_name'],
-    lastName: json['firstName'],
-    avatarSmall: json['avatarSmall'],
-    avatarMedium: json['avatarMedium'],
-    avatarLarge: json['avatarLarge'],
-  );
+        id: json['id'],
+        userName: json['userName'],
+        firstName: json['first_name'],
+        lastName: json['firstName'],
+        avatarSmall: json['avatarSmall'],
+        avatarMedium: json['avatarMedium'],
+        avatarLarge: json['avatarLarge'],
+        bio: json['bio'],
+        location: json['location'],
+      );
 }

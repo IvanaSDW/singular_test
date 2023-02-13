@@ -78,10 +78,11 @@ class Unsplash {
     }
   }
 
-  Future<dynamic> fetchAuthorData(String userId) async {
-    logger.i('fetching $userId');
-    String imageUrl = '$baseUrl/users/$userId';
-    HttpClientRequest request = await httpClient.getUrl(Uri.parse(imageUrl));
+  Future<dynamic> fetchAuthorData(String userName) async {
+
+    String url = '$baseUrl/users/$userName';
+    logger.i('fetching from $url');
+    HttpClientRequest request = await httpClient.getUrl(Uri.parse(url));
     request.headers
         .add('Authorization', 'Client-ID ${Keys.unsplashApiAccessKey}');
     HttpClientResponse response = await request.close();
@@ -93,7 +94,7 @@ class Unsplash {
       return jsonDecode(json);
     } else {
       logger.i(
-          "Error fetching image data from Unsplash: ${response.statusCode} - ${response.reasonPhrase}");
+          "Error fetching user data from Unsplash: ${response.statusCode} - ${response.reasonPhrase}");
       return null;
     }
   }

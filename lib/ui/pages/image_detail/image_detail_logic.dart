@@ -1,8 +1,12 @@
 import 'package:get/get.dart';
 import 'package:singular_test/models/unsplash_image.dart';
 import 'package:singular_test/models/unsplash_user.dart';
+import 'package:singular_test/routes/app_routes.dart';
 import 'package:singular_test/services/unsplash/unsplash_service.dart';
 import 'package:singular_test/utils/constants.dart';
+
+import '../../../services/firebase/auth_provider.dart';
+import '../../../services/firebase/firestore_service.dart';
 
 class ImageDetailLogic extends GetxController {
 
@@ -14,20 +18,25 @@ class ImageDetailLogic extends GetxController {
     dynamic imageData = await Unsplash().fetchImageData(imageId);
     logger.i('image author: ${imageData['user']['name']}');
     UnsplashImage image = UnsplashImage.fromJson(imageData);
-    logger.i('fetched image: $image');
+    logger.i('fetched image: ${image.description}');
     return image;
   }
 
-  void onMoreAboutAuthor(String username) async {
+  Future<UnsplashImage?> loadImageFromFirebase(String imageId) async {
 
+    String userId = FirebaseAuthProvider().firebaseUser!.uid;
+    logger.i('loading from firebase imageId= $imageId, userId: $userId');
+    dynamic image = await FirestoreService().fetchFavImage(userId, imageId);
+    logger.i('loaded image: ${image.id}');
+    return image;
   }
 
-  Future<UnsplashUser?> loadUserFromUnsplash(String imageId) async {
-    dynamic userData = await Unsplash().fetchImageData(imageId);
-    logger.i('author data: ${userData}');
-    UnsplashUser user = UnsplashUser.fromJson(userData);
-    logger.i('fetched user: $user');
-    return user;
+  onMoreAboutAuthorTapped(authorName) =>
+      Get.toNamed(Routes.authorDetail, arguments: {'authorName': authorName});
+
+  void onAddImageToUserCollection(UnsplashImage image) {
+    FirestoreService().addImageToUserFavorites(
+        FirebaseAuthProvider().firebaseUser!.uid, image);
   }
 
 }

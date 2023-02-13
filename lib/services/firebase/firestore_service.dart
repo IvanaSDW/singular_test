@@ -41,6 +41,21 @@ class FirestoreService {
     return fetchedUser;
   }
 
+  Future<UnsplashImage?> fetchFavImage(String userId, String imageId) async {
+    logger.i('fetching image= $imageId, user= $userId');
+    final fetchedImage = await usersCollection
+        .doc(userId)
+    .collection('favorites')
+    .doc(imageId)
+        .withConverter<UnsplashImage>(
+        fromFirestore: (snapshot, _) => UnsplashImage.fromFirebase(snapshot.data()!),
+        toFirestore: (image, _) => image.toJson())
+        .get()
+        .then((value) => value.data());
+    logger.i('just fetched image: ${fetchedImage!.author.userName}');
+    return fetchedImage;
+  }
+
   addImageToUserFavorites(String userId, UnsplashImage image) {
     usersCollection
         .doc(userId)
