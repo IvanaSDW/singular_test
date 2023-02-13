@@ -37,6 +37,19 @@ class Unsplash {
     return {'total_items': data['total'], 'totalPages': data['total_pages'], 'results': images};
   }
 
+  Future<Map<String, dynamic>> fetchImagesByAuthor(
+      {int page = 1, int perPage = 10, String? authorName}) async {
+    logger.i('keyword: $authorName');
+    String url = '$baseUrl/users/$authorName/photos?page=$page&per_page=$perPage';
+    logger.i('search url: $url');
+    var data = await _getImageData(url);
+
+    List<UnsplashImage> images = data.length == 0 ? [] : List<UnsplashImage>.generate(data.length, (index) {
+      return UnsplashImage.fromJson(data[index]);
+    });
+    return {'total_items': double.infinity, 'totalPages': double.infinity, 'results': images};
+  }
+
   dynamic _getImageData(String url) async {
     HttpClientRequest request = await httpClient.getUrl(Uri.parse(url));
 

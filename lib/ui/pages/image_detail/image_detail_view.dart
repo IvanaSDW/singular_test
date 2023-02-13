@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -33,8 +31,9 @@ class ImageDetailPage extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: FutureBuilder<UnsplashImage?>(
-              future: source == 'local' ?  logic.loadImageFromFirebase(imageId!)
-              : logic.loadImageFromUnsplash(imageId!),
+              future: source == 'local'
+                  ? logic.loadImageFromFirebase(imageId!)
+                  : logic.loadImageFromUnsplash(imageId!),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const SpinKitChasingDots(
@@ -74,28 +73,37 @@ class ImageDetailPage extends StatelessWidget {
                             Expanded(
                                 child: Text(
                               image.author.userName,
-                              style: TextStyle(fontSize: 18),
+                              style: const TextStyle(fontSize: 18),
                             )),
-                            TextButton(
-                                onPressed: () => logic.onMoreAboutAuthorTapped(
-                                    image.author.userName),
-                                child: const Text('more...'))
+                            source == 'local'
+                                ? const SizedBox.shrink()
+                                : TextButton(
+                                    onPressed: () =>
+                                        logic.onMoreAboutAuthorTapped(
+                                            image.author.userName),
+                                    child: const Text('more...'))
                           ],
                         ),
                         const SizedBox(
                           height: 12,
                         ),
-                        Container(height: 1, color: Colors.grey.withOpacity(0.3),),
+                        Container(
+                          height: 1,
+                          color: Colors.grey.withOpacity(0.3),
+                        ),
                         const SizedBox(
                           height: 12,
                         ),
-                        Text(image.description == null ? '' :
-                          '"${image.description}"',
+                        Text(
+                          image.description == null
+                              ? ''
+                              : '"${image.description}"',
                           style: const TextStyle(fontStyle: FontStyle.italic),
                           textAlign: TextAlign.center,
                         ),
                         TextButton(
-                            onPressed: () => logic.onAddImageToUserCollection(image),
+                            onPressed: () =>
+                                logic.onAddImageToUserCollection(image),
                             child: const Text(
                               'Add to my collection',
                               style: TextStyle(fontSize: 10),
@@ -104,14 +112,16 @@ class ImageDetailPage extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            image.views == null ? const SizedBox.shrink()
-                            : Wrap(
-                              crossAxisAlignment: WrapCrossAlignment.center,
-                              children: [
-                                const Icon(Icons.remove_red_eye_outlined),
-                                Text(' ${image.views}'),
-                              ],
-                            ),
+                            image.views == null
+                                ? const SizedBox.shrink()
+                                : Wrap(
+                                    crossAxisAlignment:
+                                        WrapCrossAlignment.center,
+                                    children: [
+                                      const Icon(Icons.remove_red_eye_outlined),
+                                      Text(' ${image.views}'),
+                                    ],
+                                  ),
                             Wrap(
                               crossAxisAlignment: WrapCrossAlignment.center,
                               children: [

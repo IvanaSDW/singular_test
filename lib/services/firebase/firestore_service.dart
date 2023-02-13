@@ -56,16 +56,18 @@ class FirestoreService {
     return fetchedImage;
   }
 
-  addImageToUserFavorites(String userId, UnsplashImage image) {
-    usersCollection
+  Future<void> addImageToUserFavorites(String userId, UnsplashImage image) async {
+    await usersCollection
         .doc(userId)
         .collection('favorites')
         .doc(image.id)
         .set(image.toJson());
+    return;
   }
 
-  removeImageFromUserFavorites(String userId, String imageId) {
-    usersCollection.doc(userId).collection('favorites').doc(imageId).delete();
+  Future<void> removeImageFromUserFavorites(String userId, String imageId) async {
+    await usersCollection.doc(userId).collection('favorites').doc(imageId).delete();
+    return;
   }
 
   Future<List<UnsplashImage>> fetchFavImages({required String userId}) async {

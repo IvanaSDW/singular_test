@@ -113,9 +113,10 @@ class FavoritesLogic extends GetxController {
   onImageTapped(imageId) =>
       Get.toNamed(Routes.imageDetail, arguments: {'imageId': imageId, 'source': 'local'});
 
-  void onRemoveImageFromUserCollection(String imageId) {
-    FirestoreService().removeImageFromUserFavorites(
-        FirebaseAuthProvider().firebaseUser!.uid, imageId);
+  void onRemoveImageFromUserCollection(String imageId) async {
+    await FirestoreService().removeImageFromUserFavorites(
+        FirebaseAuthProvider().firebaseUser!.uid, imageId)
+        .then((value) => refreshGallery());
   }
 
   @override
