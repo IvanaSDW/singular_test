@@ -8,8 +8,10 @@ class UnsplashImage {
     required this.height,
     required this.altDescription,
     required this.description,
-    required this.exif,
     required this.likes,
+    required this.downloads,
+    required this.views,
+    required this.topics,
     required this.rawUrl,
     required this.smallUrl,
     required this.thumbUrl,
@@ -27,60 +29,66 @@ class UnsplashImage {
   int height;
   int width;
   int likes;
+  int? downloads;
+  int? views;
+  List<dynamic>? topics;
   Map<dynamic, dynamic>? exif;
 
   Map<String, dynamic> toJson() =>
       {
         'id': id,
+        'description': description,
+        'altDescription': altDescription,
+        'author': author.toJson(),
+        'rawUrl': rawUrl,
+        'thumbUrl': thumbUrl,
+        'smallUrl': smallUrl,
         'regularUrl': regularUrl,
         'fullUrl': fullUrl,
-        'width': width,
         'height': height,
-        'altDescription': altDescription,
-        'description': description,
-        //exif: {},
+        'width': width,
         'likes': likes,
-        'rawUrl': rawUrl,
-        'smallUrl': smallUrl,
-        'thumbUrl': thumbUrl,
-        'author': author.toJson(),
+        'downloads': downloads,
+        'views': views,
+        'topics': topics,
       };
 
   factory UnsplashImage.fromJson(Map<String, dynamic> json) =>
       UnsplashImage(
         id: json['id'],
+        description: json['description'],
+        altDescription: json['alt_description'],
+        author: UnsplashUser.fromJson(json['user']),
+        rawUrl: json['urls']['raw'],
+        thumbUrl: json['urls']['thumb'],
+        smallUrl: json['urls']['small'],
         regularUrl: json['urls']['regular'],
         fullUrl: json['urls']['full'],
-        width: json['width'],
         height: json['height'],
-        altDescription: json['alt_description'],
-        description: json['description'],
-        exif: {},
+        width: json['width'],
         likes: json['likes'],
-        rawUrl: json['urls']['raw'],
-        smallUrl: json['urls']['small'],
-        thumbUrl: json['urls']['thumb'],
-        author: UnsplashUser.fromJson(json['user']),
+        downloads: json['downloads'],
+        views: json['views'],
+        topics: json['topic_submissions'].keys.toList(),
       );
 
   factory UnsplashImage.fromFirebase(Map<String, dynamic> json) =>
       UnsplashImage(
         id: json['id'],
+        description: json['description'],
+        altDescription: json['altDescription'],
+        author: UnsplashUser.fromFirebase(json['author']),
+        rawUrl: json['rawUrl'],
+        thumbUrl: json['thumbUrl'],
+        smallUrl: json['smallUrl'],
         regularUrl: json['regularUrl'],
         fullUrl: json['fullUrl'],
-        width: json['width'],
         height: json['height'],
-        altDescription: json['altDescription'],
-        description: json['description'],
-        exif: {},
+        width: json['width'],
         likes: json['likes'],
-        rawUrl: json['rawUrl'],
-        smallUrl: json['smallUrl'],
-        thumbUrl: json['thumbUrl'],
-        author: UnsplashUser.fromFirebase(json['author']),
+        downloads: json['downloads'],
+        views: json['views'],
+        topics: json['topics'],
       );
 
-// Exif getExif() {
-//   return data['exif'] != null ? Exif(data['exif']) : null;
-// }
 }

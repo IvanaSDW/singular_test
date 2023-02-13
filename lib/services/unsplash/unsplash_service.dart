@@ -8,10 +8,12 @@ class Unsplash {
 
   static const String baseUrl = 'https://api.unsplash.com';
 
-  static Future<List<UnsplashImage>> fetchImages(
+  HttpClient httpClient = HttpClient();
+
+  Future<List<UnsplashImage>> fetchImages(
       {int page = 1, int perPage = 10, String? keyword}) async {
     logger.i('keyword: $keyword');
-    String url = '$baseUrl/photos?page=$page&per_page=$perPage';
+    String url = '$baseUrl/photos?page=$page&per_page=$perPage&order_by=popular';
 
     var data = await _getImageData(url);
 
@@ -21,10 +23,11 @@ class Unsplash {
     return images;
   }
 
-  static Future<Map<String, dynamic>> fetchImagesByKeyword(
+  Future<Map<String, dynamic>> fetchImagesByKeyword(
       {int page = 1, int perPage = 10, String? keyword}) async {
     logger.i('keyword: $keyword');
     String url = '$baseUrl/search/photos?query=$keyword&page=$page&per_page=$perPage&order_by=popular';
+    logger.i('search url: $url');
 
     var data = await _getImageData(url);
 
@@ -34,32 +37,64 @@ class Unsplash {
     return {'total_items': data['total'], 'totalPages': data['total_pages'], 'results': images};
   }
 
-  static dynamic _getImageData(String url) async {
-    HttpClient httpClient = HttpClient();
+  dynamic _getImageData(String url) async {
     HttpClientRequest request = await httpClient.getUrl(Uri.parse(url));
 
-    // pass the access key in the header
     request.headers
         .add('Authorization', 'Client-ID ${Keys.unsplashApiAccessKey}');
 
-    // wait for response
     HttpClientResponse response = await request.close();
-    // Process the response
+
     if (response.statusCode == 200) {
-      // response: OK
-      // decode JSON
       String json = await response.transform(utf8.decoder).join();
-      // return decoded json
       // Log remaining requests for demo app.
       logger.w(
           'remaining requests: ${response.headers['x-ratelimit-remaining']}');
       return jsonDecode(json);
     } else {
-      // something went wrong :(
       logger.i(
           "Error fetching image data from Unsplash: ${response.statusCode} - ${response.reasonPhrase}");
-      // return empty list
       return [];
+    }
+  }
+
+  Future<dynamic> fetchImageData(String imageId) async {
+    logger.i('fetching $imageId');
+    String imageUrl = '$baseUrl/photos/$imageId';
+    HttpClientRequest request = await httpClient.getUrl(Uri.parse(imageUrl));
+    request.headers
+        .add('Authorization', 'Client-ID ${Keys.unsplashApiAccessKey}');
+    HttpClientResponse response = await request.close();
+    if (response.statusCode == 200) {
+      String json = await response.transform(utf8.decoder).join();
+      // Log remaining requests for demo app.
+      logger.w(
+          'remaining requests: ${response.headers['x-ratelimit-remaining']}');
+      return jsonDecode(json);
+    } else {
+      logger.i(
+          "Error fetching image data from Unsplash: ${response.statusCode} - ${response.reasonPhrase}");
+      return null;
+    }
+  }
+
+  Future<dynamic> fetchAuthorData(String userId) async {
+    logger.i('fetching $userId');
+    String imageUrl = '$baseUrl/users/$userId';
+    HttpClientRequest request = await httpClient.getUrl(Uri.parse(imageUrl));
+    request.headers
+        .add('Authorization', 'Client-ID ${Keys.unsplashApiAccessKey}');
+    HttpClientResponse response = await request.close();
+    if (response.statusCode == 200) {
+      String json = await response.transform(utf8.decoder).join();
+      // Log remaining requests for demo app.
+      logger.w(
+          'remaining requests: ${response.headers['x-ratelimit-remaining']}');
+      return jsonDecode(json);
+    } else {
+      logger.i(
+          "Error fetching image data from Unsplash: ${response.statusCode} - ${response.reasonPhrase}");
+      return null;
     }
   }
 }

@@ -1,6 +1,6 @@
-
 import 'package:get/get.dart';
 import 'package:singular_test/controllers/home_logic.dart';
+import 'package:singular_test/routes/app_routes.dart';
 import 'package:singular_test/services/firebase/auth_provider.dart';
 import 'package:singular_test/services/firebase/firestore_service.dart';
 import 'package:singular_test/utils/constants.dart';
@@ -35,11 +35,13 @@ class GalleryLogic extends GetxController {
   set loadingImages(bool value) => _loadingImages.value = value;
 
   final RxBool _showSearchBar = false.obs;
+
   bool get showSearchBar => _showSearchBar.value;
+
   set showSearchBar(bool value) => _showSearchBar.value = value;
 
-
-  Future<List<UnsplashImage>> loadUnsplashImages({required bool forward}) async {
+  Future<List<UnsplashImage>> loadUnsplashImages(
+      {required bool forward}) async {
     logger.i('called for : $keyword');
     if (loadingImages) {
       return [];
@@ -51,28 +53,18 @@ class GalleryLogic extends GetxController {
     loadingImages = true;
 
     List<UnsplashImage> fetchImages;
-    if (keyword.isEmpty) {
-      fetchImages = await Unsplash.fetchImages(
-          page: forward
-              ? ++page
-              : page <= 1
-              ? 1
-              : --page);
-      logger.i('Page: $page');
-      images.value = fetchImages;
-    } else {
-      var res = await Unsplash.fetchImagesByKeyword(
-          keyword: keyword,
-          page: forward
-              ? ++page
-              : page <= 1
-              ? 1
-              : --page);
-      totalPages = res['totalPages'];
-      logger.i('Page: $page');
-      fetchImages = res['results'];
-      images.value = fetchImages;
-    }
+    var res = await Unsplash().fetchImagesByKeyword(
+        keyword: keyword.isEmpty ? 'all' : keyword,
+        page: forward
+            ? ++page
+            : page <= 1
+                ? 1
+                : --page);
+    totalPages = res['totalPages'];
+    logger.i('Page: $page');
+    fetchImages = res['results'];
+    images.value = fetchImages;
+
     loadingImages = false;
     return fetchImages;
   }
@@ -106,8 +98,12 @@ class GalleryLogic extends GetxController {
   }
 
   void onAddImageToUserCollection(UnsplashImage image) {
-    FirestoreService().addImageToUserFavorites(FirebaseAuthProvider().firebaseUser!.uid, image);
+    FirestoreService().addImageToUserFavorites(
+        FirebaseAuthProvider().firebaseUser!.uid, image);
   }
+
+  onImageTapped(imageId) =>
+      Get.toNamed(Routes.imageDetail, arguments: {'imageId': imageId});
 
   @override
   void onInit() {
