@@ -12,7 +12,6 @@ class Unsplash {
 
   Future<List<UnsplashImage>> fetchImages(
       {int page = 1, int perPage = 10, String? keyword}) async {
-    logger.i('keyword: $keyword');
     String url = '$baseUrl/photos?page=$page&per_page=$perPage&order_by=popular';
 
     var data = await _getImageData(url);
@@ -25,9 +24,8 @@ class Unsplash {
 
   Future<Map<String, dynamic>> fetchImagesByKeyword(
       {int page = 1, int perPage = 10, String? keyword}) async {
-    logger.i('keyword: $keyword');
     String url = '$baseUrl/search/photos?query=$keyword&page=$page&per_page=$perPage&order_by=popular';
-    logger.i('search url: $url');
+
 
     var data = await _getImageData(url);
 
@@ -39,9 +37,9 @@ class Unsplash {
 
   Future<Map<String, dynamic>> fetchImagesByAuthor(
       {int page = 1, int perPage = 10, String? authorName}) async {
-    logger.i('keyword: $authorName');
+
     String url = '$baseUrl/users/$authorName/photos?page=$page&per_page=$perPage';
-    logger.i('search url: $url');
+
     var data = await _getImageData(url);
 
     List<UnsplashImage> images = data.length == 0 ? [] : List<UnsplashImage>.generate(data.length, (index) {
@@ -72,7 +70,6 @@ class Unsplash {
   }
 
   Future<dynamic> fetchImageData(String imageId) async {
-    logger.i('fetching $imageId');
     String imageUrl = '$baseUrl/photos/$imageId';
     HttpClientRequest request = await httpClient.getUrl(Uri.parse(imageUrl));
     request.headers
@@ -94,7 +91,7 @@ class Unsplash {
   Future<dynamic> fetchAuthorData(String userName) async {
 
     String url = '$baseUrl/users/$userName';
-    logger.i('fetching from $url');
+
     HttpClientRequest request = await httpClient.getUrl(Uri.parse(url));
     request.headers
         .add('Authorization', 'Client-ID ${Keys.unsplashApiAccessKey}');

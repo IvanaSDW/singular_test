@@ -23,7 +23,7 @@ class FirestoreService {
     DocumentSnapshot userSnapshot = await userReference.get();
     if (!userSnapshot.exists) {
       await userReference.set(userObject).then((value) {
-        logger.i('User ${userObject.userId} added.');
+
       }).catchError((error) {
         logger.e('Error creating user: ${error.toString()}');
       });
@@ -42,7 +42,7 @@ class FirestoreService {
   }
 
   Future<UnsplashImage?> fetchFavImage(String userId, String imageId) async {
-    logger.i('fetching image= $imageId, user= $userId');
+
     final fetchedImage = await usersCollection
         .doc(userId)
     .collection('favorites')
@@ -52,7 +52,7 @@ class FirestoreService {
         toFirestore: (image, _) => image.toJson())
         .get()
         .then((value) => value.data());
-    logger.i('just fetched image: ${fetchedImage!.author.userName}');
+
     return fetchedImage;
   }
 
@@ -83,7 +83,7 @@ class FirestoreService {
   }
 
   Query<UnsplashImage> imagesByKeyword(String userId, String keyword) {
-    logger.i('Query for: $keyword');
+
     return usersCollection
         .doc(userId)
         .collection('favorites')
@@ -96,7 +96,7 @@ class FirestoreService {
 
   Future<List<UnsplashImage>> fetchFavImagesByKeyword(
       {required String userId, required String keyword}) async {
-    logger.i('fetching: $keyword');
+
     return await usersCollection
         .doc(userId)
         .collection('favorites')

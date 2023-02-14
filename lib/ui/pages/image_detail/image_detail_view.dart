@@ -19,7 +19,6 @@ class ImageDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     imageId = Get.arguments['imageId'];
     source = Get.arguments['source'] ?? 'unsplash';
-    logger.i('args: imageid = $imageId, source = $source');
     if (imageId == null) {
       Get.back();
     }

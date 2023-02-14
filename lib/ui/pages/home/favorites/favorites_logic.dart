@@ -4,11 +4,11 @@ import '../../../../models/unsplash_image.dart';
 import '../../../../routes/app_routes.dart';
 import '../../../../services/firebase/auth_provider.dart';
 import '../../../../services/firebase/firestore_service.dart';
-import '../../../../utils/constants.dart';
 
 class FavoritesLogic extends GetxController {
   final HomeLogic homeController = Get.find<HomeLogic>();
-  RxList<UnsplashImage> images = <UnsplashImage>[].obs;
+
+  RxList<UnsplashImage> currentImages = <UnsplashImage>[].obs;
 
   final RxInt _page = 0.obs;
 
@@ -41,10 +41,6 @@ class FavoritesLogic extends GetxController {
   set showSearchBar(bool value) => _showSearchBar.value = value;
 
   Future<List<UnsplashImage>> loadFavImages() async {
-    logger.i('called for : $keyword');
-    if (loadingImages) {
-      return [];
-    }
 
     if (totalPages != -1 && page >= totalPages) {
       return [];
@@ -55,14 +51,15 @@ class FavoritesLogic extends GetxController {
 
     fetchImages = await FirestoreService()
         .fetchFavImages(userId: FirebaseAuthProvider().firebaseUser!.uid);
-    images.value = fetchImages;
+
+    currentImages.value = fetchImages;
 
     loadingImages = false;
     return fetchImages;
   }
 
   Future<List<UnsplashImage>> loadFavImagesByKeyword() async {
-    logger.i('called for : $keyword');
+
     if (loadingImages) {
       return [];
     }
@@ -76,7 +73,7 @@ class FavoritesLogic extends GetxController {
 
     fetchImages = await FirestoreService()
         .fetchFavImagesByKeyword(userId: FirebaseAuthProvider().firebaseUser!.uid, keyword: keyword);
-    images.value = fetchImages;
+    currentImages.value = fetchImages;
 
     loadingImages = false;
     return fetchImages;
@@ -84,22 +81,22 @@ class FavoritesLogic extends GetxController {
 
   Future<UnsplashImage?> loadImage(int index) async {
     // check if new images need to be loaded
-    return index < images.length ? images[index] : null;
+    return index < currentImages.length ? currentImages[index] : null;
   }
 
   // Resets to the initial state.
   resetImages() {
-    images.value = [];
+    currentImages.value = [];
     page = 0;
     totalPages = -1;
   }
 
   refreshGallery() {
-    images.value = [];
+    currentImages.value = [];
     page = 0;
     totalPages = -1;
     keyword = '';
-    homeController.favoritesTitle.value = homeController.defaultGalleryTitle;
+    homeController.favoritesTitle.value = homeController.defaultFavoritesTitle;
     loadFavImages();
   }
 
@@ -122,7 +119,6 @@ class FavoritesLogic extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    logger.i('called');
     loadFavImages();
   }
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'package:singular_test/ui/widgets/favorite_image_tile.dart';
-import '../../../../utils/constants.dart';
 import 'favorites_logic.dart';
 
 class FavoritesWidget extends StatelessWidget {
@@ -13,8 +12,7 @@ class FavoritesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      logger.i('images in favs: ${logic.images.length}');
-      return logic.images.isNotEmpty
+      return logic.currentImages.isNotEmpty
           ? Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -36,7 +34,6 @@ class FavoritesWidget extends StatelessWidget {
                                   onChanged: (String input) =>
                                       logic.keyword = input,
                                   onSubmitted: (String keyword) {
-                                    logger.i('keyword typed: $keyword');
                                     () => logic.submitSearch();
                                   }),
                             ),
@@ -95,7 +92,7 @@ class FavoritesWidget extends StatelessWidget {
                     onRefresh: () => logic.refreshGallery(),
                     child: MasonryGridView.count(
                       crossAxisCount: 2,
-                      itemCount: logic.images.length,
+                      itemCount: logic.currentImages.length,
                       padding: const EdgeInsets.only(
                           top: 0.0, left: 16.0, right: 16.0, bottom: 0.0),
                       mainAxisSpacing: 4,
@@ -118,20 +115,14 @@ class FavoritesWidget extends StatelessWidget {
           : Center(
               child: SizedBox(
                 width: Get.width * 0.8,
-                child: Card(
+                child: const Card(
                   color: Colors.black26,
                   child: Padding(
                     padding: EdgeInsets.all(16.0),
-                    child: Column(
-                      children: [
-                        const Text(
-                          'You have not yet added images to your collection.\nBrowse to Gallery tab and start adding your favorites!!!',
-                          style: TextStyle(color: Colors.white, fontSize: 20),
-                          textAlign: TextAlign.center,
-                        ),
-                        TextButton(onPressed: () => logic.refreshGallery(), child:
-                        const Icon(Icons.refresh))
-                      ],
+                    child: Text(
+                      'You have not yet added images to your collection.\nBrowse to Gallery tab and start adding your favorites!!!',
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                      textAlign: TextAlign.center,
                     ),
                   ),
                 ),

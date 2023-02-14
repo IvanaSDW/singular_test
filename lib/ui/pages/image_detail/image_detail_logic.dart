@@ -18,17 +18,13 @@ class ImageDetailLogic extends GetxController {
 
   Future<UnsplashImage?> loadImageFromUnsplash(String imageId) async {
     dynamic imageData = await Unsplash().fetchImageData(imageId);
-    logger.i('image author: ${imageData['user']['name']}');
     UnsplashImage image = UnsplashImage.fromJson(imageData);
-    logger.i('fetched image: ${image.description}');
     return image;
   }
 
   Future<UnsplashImage?> loadImageFromFirebase(String imageId) async {
     String userId = FirebaseAuthProvider().firebaseUser!.uid;
-    logger.i('loading from firebase imageId= $imageId, userId: $userId');
     dynamic image = await FirestoreService().fetchFavImage(userId, imageId);
-    logger.i('loaded image: ${image.id}');
     return image;
   }
 

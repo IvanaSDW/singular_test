@@ -15,7 +15,6 @@ class AuthorDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     authorName = Get.arguments['authorName'];
-    logger.i('Argument id: $authorName');
     if (authorName == null) {
       Get.back();
     }

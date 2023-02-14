@@ -18,10 +18,8 @@ class FirebaseAuthProvider extends GetxController {
   void onReady() {
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       if (user == null) {
-        logger.i('User is currently signed out!, signing in....');
         signInUserAnonymously();
       } else {
-        logger.i('User is signed in!: ${user.uid}');
         firebaseUser = user;
         FirestoreService().createUser(user);
       }

@@ -49,8 +49,6 @@ class GalleryLogic extends GetxController {
 
   Future<List<UnsplashImage>> loadUnsplashImages(
       {required bool forward,}) async {
-    logger.i('called for : $keyword, byUser is $byUser, keyword is $keyword');
-    logger.i('totalpages : $totalPages, page is $page, loading is $loadingImages');
     if (totalPages != -1 && page >= totalPages) {
       return [];
     }
@@ -77,7 +75,6 @@ class GalleryLogic extends GetxController {
     }
 
     totalPages = res['totalPages'] + .0;
-    logger.i('Page: $page');
     fetchImages = res['results'];
     images.value = fetchImages;
 
@@ -130,7 +127,6 @@ class GalleryLogic extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    logger.i('called');
     loadUnsplashImages(forward: true);
   }
 }

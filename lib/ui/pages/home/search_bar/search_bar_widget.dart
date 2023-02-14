@@ -22,7 +22,6 @@ class SearchBarWidget extends StatelessWidget {
               ),
               onChanged: (String input) => controller.keyword = input,
               onSubmitted: (String keyword) {
-                logger.i('keyword typed: $keyword');
                 controller.onSubmitSearch();
               }),
         ),
